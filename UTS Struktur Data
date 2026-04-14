@@ -1,0 +1,88 @@
+public class SortingNilai {
+
+    // Data mahasiswa
+    static String[] nama = {
+        "Andi Pratama", "Sinta Dewi Lestari", "Budi Santoso",
+        "Rina Ayu Putri", "Eko Wijaya", "Maya Sari",
+        "Dimas Prakoso", "Nadia Safira", "Rizky Aditya", "Putri Nirmala"
+    };
+    static String[] nim = {
+        "2201012345", "2201012567", "2201012789",
+        "2201012910", "2201013034", "2201013256",
+        "2201013478", "2201013690", "2201013812", "2201014035"
+    };
+    static int[] nilai = {85, 92, 78, 88, 65, 95, 72, 81, 90, 76};
+
+    public static void main(String[] args) {
+        System.out.println("====== BUBBLE SORT ======");
+        bubbleSort(nama.clone(), nim.clone(), nilai.clone());
+
+        System.out.println("\n====== INSERTION SORT ======");
+        insertionSort(nama.clone(), nim.clone(), nilai.clone());
+
+        System.out.println("\n====== SELECTION SORT ======");
+        selectionSort(nama.clone(), nim.clone(), nilai.clone());
+    }
+
+    // --- BUBBLE SORT ---
+    // Bandingkan dua elemen bersebelahan, tukar jika perlu, ulangi
+    static void bubbleSort(String[] n, String[] m, int[] v) {
+        int size = v.length;
+        for (int i = 0; i < size - 1; i++) {
+            for (int j = 0; j < size - i - 1; j++) {
+                if (v[j] < v[j + 1]) { // descending (nilai tertinggi di atas)
+                    // Tukar nilai
+                    int tmpV = v[j]; v[j] = v[j+1]; v[j+1] = tmpV;
+                    // Tukar nama & nim juga agar tetap sinkron
+                    String tmpN = n[j]; n[j] = n[j+1]; n[j+1] = tmpN;
+                    String tmpM = m[j]; m[j] = m[j+1]; m[j+1] = tmpM;
+                }
+            }
+        }
+        cetakTabel(n, m, v);
+    }
+
+    // --- INSERTION SORT ---
+    // Ambil satu elemen, sisipkan ke posisi yang tepat di bagian yang sudah terurut
+    static void insertionSort(String[] n, String[] m, int[] v) {
+        int size = v.length;
+        for (int i = 1; i < size; i++) {
+            int keyV = v[i];
+            String keyN = n[i], keyM = m[i];
+            int j = i - 1;
+            // Geser elemen yang lebih kecil ke kanan
+            while (j >= 0 && v[j] < keyV) {
+                v[j+1] = v[j]; n[j+1] = n[j]; m[j+1] = m[j];
+                j--;
+            }
+            v[j+1] = keyV; n[j+1] = keyN; m[j+1] = keyM;
+        }
+        cetakTabel(n, m, v);
+    }
+
+    // --- SELECTION SORT ---
+    // Cari nilai terbesar, taruh di posisi paling depan, ulangi untuk sisa array
+    static void selectionSort(String[] n, String[] m, int[] v) {
+        int size = v.length;
+        for (int i = 0; i < size - 1; i++) {
+            int maxIdx = i;
+            for (int j = i + 1; j < size; j++) {
+                if (v[j] > v[maxIdx]) maxIdx = j;
+            }
+            // Tukar elemen terbesar ke posisi i
+            int tmpV = v[i]; v[i] = v[maxIdx]; v[maxIdx] = tmpV;
+            String tmpN = n[i]; n[i] = n[maxIdx]; n[maxIdx] = tmpN;
+            String tmpM = m[i]; m[i] = m[maxIdx]; m[maxIdx] = tmpM;
+        }
+        cetakTabel(n, m, v);
+    }
+
+    // Fungsi bantu untuk mencetak tabel hasil
+    static void cetakTabel(String[] n, String[] m, int[] v) {
+        System.out.printf("%-20s %-15s %s%n", "Nama", "NIM", "Nilai");
+        System.out.println("-".repeat(42));
+        for (int i = 0; i < v.length; i++) {
+            System.out.printf("%-20s %-15s %d%n", n[i], m[i], v[i]);
+        }
+    }
+}
